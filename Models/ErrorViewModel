@@ -1,0 +1,8 @@
+namespace sistem_penjualan_tiket_wisata.Models;
+
+public class ErrorViewModel
+{
+    public string? RequestId { get; set; }
+
+    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+}
