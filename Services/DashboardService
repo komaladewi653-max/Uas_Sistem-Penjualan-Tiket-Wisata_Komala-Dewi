@@ -1,0 +1,44 @@
+using Microsoft.EntityFrameworkCore;
+using WisataTicketApp.Data;
+using WisataTicketApp.Models.ViewModels;
+
+namespace WisataTicketApp.Services
+{
+    public class DashboardService
+    {
+        private readonly ApplicationDbContext _context;
+
+        public DashboardService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public DashboardViewModel GetDashboardData()
+        {
+            return new DashboardViewModel
+            {
+                TotalWisata = _context.Wisatas.Count(),
+
+                TotalPengunjung = _context.Pengunjungs.Count(),
+
+                TotalPemesanan = _context.Pemesanans.Count(),
+
+                TotalTiketTerjual = _context.Pemesanans
+                    .Sum(x => x.JumlahTiket),
+
+                TotalKuotaTersedia = _context.Wisatas
+                    .Sum(x => x.Kuota),
+
+                TotalPendapatan = _context.Pemesanans
+                    .Sum(x => x.TotalBayar),
+
+                RecentOrders = _context.Pemesanans
+                    .Include(x => x.Pengunjung)
+                    .Include(x => x.Wisata)
+                    .OrderByDescending(x => x.TanggalKunjungan)
+                    .Take(5)
+                    .ToList()
+            };
+        }
+    }
+}
