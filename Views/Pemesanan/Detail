@@ -1,0 +1,48 @@
+@model WisataTicketApp.Models.Pemesanan
+
+<h2>Detail Tiket</h2>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Nomor Tiket</th>
+        <td>@Model.NomorTiket</td>
+    </tr>
+
+    <tr>
+        <th>Pengunjung</th>
+        <td>@Model.Pengunjung?.Nama</td>
+    </tr>
+
+    <tr>
+        <th>Wisata</th>
+        <td>@Model.Wisata?.NamaWisata</td>
+    </tr>
+
+    <tr>
+        <th>Tanggal Kunjungan</th>
+        <td>@Model.TanggalKunjungan.ToString("dd/MM/yyyy")</td>
+    </tr>
+
+    <tr>
+        <th>Jumlah Tiket</th>
+        <td>@Model.JumlahTiket</td>
+    </tr>
+
+    <tr>
+        <th>Total Bayar</th>
+        <td>Rp @Model.TotalBayar.ToString("N0")</td>
+    </tr>
+
+</table>
+
+<a asp-action="Index"
+   class="btn btn-secondary">
+    Kembali
+</a>
+
+<a asp-action="Cetak"
+   asp-route-id="@Model.Id"
+   class="btn btn-success">
+    Cetak PDF
+</a>
