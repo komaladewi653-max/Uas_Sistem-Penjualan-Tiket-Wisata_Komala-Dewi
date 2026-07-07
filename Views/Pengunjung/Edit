@@ -1,0 +1,38 @@
+@model WisataTicketApp.Models.Pengunjung
+
+<h1>Edit Pengunjung</h1>
+
+<form method="post">
+
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label>Nama</label>
+        <input asp-for="Nama" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>No HP</label>
+        <input asp-for="NoHp" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Alamat</label>
+        <textarea asp-for="Alamat" class="form-control"></textarea>
+    </div>
+
+    <button class="btn btn-success">
+        Update
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Kembali
+    </a>
+
+</form>
