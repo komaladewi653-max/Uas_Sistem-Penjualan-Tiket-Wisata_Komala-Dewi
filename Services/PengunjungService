@@ -1,0 +1,48 @@
+using WisataTicketApp.Data;
+using WisataTicketApp.Models;
+
+namespace WisataTicketApp.Services
+{
+    public class PengunjungService
+    {
+        private readonly ApplicationDbContext _context;
+
+        public PengunjungService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public List<Pengunjung> GetAll()
+        {
+            return _context.Pengunjungs.ToList();
+        }
+
+        public Pengunjung? GetById(Guid id)
+        {
+            return _context.Pengunjungs.Find(id);
+        }
+
+        public void Create(Pengunjung pengunjung)
+        {
+            _context.Pengunjungs.Add(pengunjung);
+            _context.SaveChanges();
+        }
+
+        public void Update(Pengunjung pengunjung)
+        {
+            _context.Pengunjungs.Update(pengunjung);
+            _context.SaveChanges();
+        }
+
+        public void Delete(Guid id)
+        {
+            var data = _context.Pengunjungs.Find(id);
+
+            if (data != null)
+            {
+                _context.Pengunjungs.Remove(data);
+                _context.SaveChanges();
+            }
+        }
+    }
+}
