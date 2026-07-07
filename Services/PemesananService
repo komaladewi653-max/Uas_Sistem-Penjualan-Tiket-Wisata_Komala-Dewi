@@ -1,0 +1,233 @@
+using Microsoft.EntityFrameworkCore;
+using WisataTicketApp.Data;
+using WisataTicketApp.Models;
+
+namespace WisataTicketApp.Services
+{
+    public class PemesananService
+    {
+        private readonly ApplicationDbContext _context;
+
+        public PemesananService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public List<Pemesanan> GetAll()
+        {
+            return _context.Pemesanans
+                .Include(x => x.Pengunjung)
+                .Include(x => x.Wisata)
+                .ToList();
+        }
+        public Pemesanan? GetById(Guid id)
+        {
+            return _context.Pemesanans
+                .Include(x => x.Pengunjung)
+                .Include(x => x.Wisata)
+                .FirstOrDefault(x => x.Id == id);
+        }
+        public void Create(Pemesanan pemesanan)
+        {
+            var wisata = _context.Wisatas
+                .FirstOrDefault(x => x.Id == pemesanan.WisataId);
+
+            if (wisata == null)
+            {
+                throw new Exception(
+                    $"Wisata tidak ditemukan. ID: {pemesanan.WisataId}");
+            }
+
+            if (wisata.Kuota < pemesanan.JumlahTiket)
+            {
+                throw new Exception("Kuota tiket tidak mencukupi");
+            }
+            var random =
+                Random.Shared.Next(1000, 9999);
+
+            pemesanan.NomorTiket =
+                $"WTA-{DateTime.Now:yyyyMMdd}-{random}";
+
+            pemesanan.TotalBayar =
+                wisata.HargaTiket * pemesanan.JumlahTiket;
+
+            wisata.Kuota -= pemesanan.JumlahTiket;
+
+            _context.Pemesanans.Add(pemesanan);
+
+            _context.SaveChanges();
+        }
+        public void Delete(Guid id)
+        {
+            var pemesanan = _context.Pemesanans
+                .FirstOrDefault(x => x.Id == id);
+
+            if (pemesanan == null)
+                return;
+
+            var wisata = _context.Wisatas
+                .FirstOrDefault(x => x.Id == pemesanan.WisataId);
+
+            if (wisata != null)
+            {
+                wisata.Kuota += pemesanan.JumlahTiket;
+            }
+
+            _context.Pemesanans.Remove(pemesanan);
+
+            _context.SaveChanges();
+        }
+    }
+}
+using WisataTicketApp.Data;
+using WisataTicketApp.Models;
+
+namespace WisataTicketApp.Services
+{
+    public class PengunjungService
+    {
+        private readonly ApplicationDbContext _context;
+
+        public PengunjungService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public List<Pengunjung> GetAll()
+        {
+            return _context.Pengunjungs.ToList();
+        }
+
+        public Pengunjung? GetById(Guid id)
+        {
+            return _context.Pengunjungs.Find(id);
+        }
+
+        public void Create(Pengunjung pengunjung)
+        {
+            _context.Pengunjungs.Add(pengunjung);
+            _context.SaveChanges();
+        }
+
+        public void Update(Pengunjung pengunjung)
+        {
+            _context.Pengunjungs.Update(pengunjung);
+            _context.SaveChanges();
+        }
+
+        public void Delete(Guid id)
+        {
+            var data = _context.Pengunjungs.Find(id);
+
+            if (data != null)
+            {
+                _context.Pengunjungs.Remove(data);
+                _context.SaveChanges();
+            }
+        }
+    }
+}
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
+using WisataTicketApp.Models;
+
+namespace WisataTicketApp.Services
+{
+    public class TicketPdfService
+    {
+        public byte[] Generate(Pemesanan data)
+        {
+            return Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+
+                    page.Margin(30);
+
+                    page.Header()
+                        .Text("WISATA TICKET APP")
+                        .FontSize(20)
+                        .Bold();
+
+                    page.Content()
+                        .Column(col =>
+                        {
+                            col.Spacing(10);
+
+                            col.Item().Text($"Nomor Tiket : {data.NomorTiket}");
+
+                            col.Item().Text(
+                                $"Nama Pengunjung : {data.Pengunjung?.Nama}");
+
+                            col.Item().Text(
+                                $"Wisata : {data.Wisata?.NamaWisata}");
+
+                            col.Item().Text(
+                                $"Tanggal Kunjungan : {data.TanggalKunjungan:dd MMMM yyyy}");
+
+                            col.Item().Text(
+                                $"Jumlah Tiket : {data.JumlahTiket}");
+
+                            col.Item().Text(
+                                $"Total Bayar : Rp {data.TotalBayar:N0}");
+                        });
+
+                    page.Footer()
+                        .AlignCenter()
+                        .Text("Terima kasih telah menggunakan WisataTicketApp");
+                });
+            })
+            .GeneratePdf();
+        }
+    }
+}
+using WisataTicketApp.Data;
+using WisataTicketApp.Models;
+
+namespace WisataTicketApp.Services
+{
+    public class WisataService
+    {
+        private readonly ApplicationDbContext _context;
+
+        public WisataService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public List<Wisata> GetAll()
+        {
+            return _context.Wisatas.ToList();
+        }
+
+        public Wisata? GetById(Guid id)
+        {
+            return _context.Wisatas.Find(id);
+        }
+
+        public void Create(Wisata wisata)
+        {
+            _context.Wisatas.Add(wisata);
+            _context.SaveChanges();
+        }
+
+        public void Update(Wisata wisata)
+        {
+            _context.Wisatas.Update(wisata);
+            _context.SaveChanges();
+        }
+
+        public void Delete(Guid id)
+        {
+            var wisata = _context.Wisatas.Find(id);
+
+            if (wisata != null)
+            {
+                _context.Wisatas.Remove(wisata);
+                _context.SaveChanges();
+            }
+        }
+    }
+}
