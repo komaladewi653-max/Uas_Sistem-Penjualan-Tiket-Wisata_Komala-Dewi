@@ -1,0 +1,60 @@
+@model WisataTicketApp.Models.ViewModels.LaporanViewModel
+
+<h2>Laporan Pemesanan Tiket</h2>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>No Tiket</th>
+            <th>Pengunjung</th>
+            <th>Wisata</th>
+            <th>Tanggal</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    @foreach(var item in Model.Pemesanans)
+    {
+        <tr>
+
+            <td>@item.NomorTiket</td>
+
+            <td>@item.Pengunjung?.Nama</td>
+
+            <td>@item.Wisata?.NamaWisata</td>
+
+            <td>
+                @item.TanggalKunjungan.ToString("dd/MM/yyyy")
+            </td>
+
+            <td>
+                Rp @item.TotalBayar.ToString("N0")
+            </td>
+
+        </tr>
+    }
+
+    </tbody>
+
+</table>
+
+<div class="card">
+
+    <div class="card-body">
+
+        <h5>
+            Total Transaksi :
+            @Model.TotalTransaksi
+        </h5>
+
+        <h5>
+            Total Pendapatan :
+            Rp @Model.TotalPendapatan.ToString("N0")
+        </h5>
+
+    </div>
+
+</div>
