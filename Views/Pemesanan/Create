@@ -1,0 +1,210 @@
+@model WisataTicketApp.Models.ViewModels.PemesananViewModel
+
+<h2>Pesan Tiket</h2>
+
+<div asp-validation-summary="All" class="text-danger">
+</div>
+
+<form method="post">
+
+    <div class="mb-3">
+        <label>Pengunjung</label>
+
+        <select asp-for="PengunjungId" asp-items="Model.Pengunjungs" class="form-select">
+
+            <option value="">
+                -- Pilih Pengunjung --
+            </option>
+
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Wisata</label>
+
+        <select asp-for="WisataId" asp-items="Model.Wisatas" class="form-select">
+
+            <option value="">
+                -- Pilih Wisata --
+            </option>
+
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Tanggal Kunjungan</label>
+
+        <input asp-for="TanggalKunjungan" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Jumlah Tiket</label>
+
+        <input asp-for="JumlahTiket" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Simpan
+    </button>
+    <div class="mt-3">
+
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Kembali
+        </a>
+
+    </div>
+
+</form>
+@model WisataTicketApp.Models.Pemesanan
+
+<h2>Detail Tiket</h2>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Nomor Tiket</th>
+        <td>@Model.NomorTiket</td>
+    </tr>
+
+    <tr>
+        <th>Pengunjung</th>
+        <td>@Model.Pengunjung?.Nama</td>
+    </tr>
+
+    <tr>
+        <th>Wisata</th>
+        <td>@Model.Wisata?.NamaWisata</td>
+    </tr>
+
+    <tr>
+        <th>Tanggal Kunjungan</th>
+        <td>@Model.TanggalKunjungan.ToString("dd/MM/yyyy")</td>
+    </tr>
+
+    <tr>
+        <th>Jumlah Tiket</th>
+        <td>@Model.JumlahTiket</td>
+    </tr>
+
+    <tr>
+        <th>Total Bayar</th>
+        <td>Rp @Model.TotalBayar.ToString("N0")</td>
+    </tr>
+
+</table>
+
+<a asp-action="Index"
+   class="btn btn-secondary">
+    Kembali
+</a>
+
+<a asp-action="Cetak"
+   asp-route-id="@Model.Id"
+   class="btn btn-success">
+    Cetak PDF
+</a>
+@model List<WisataTicketApp.Models.Pemesanan>
+
+<h2 class="mb-4">Data Pemesanan Tiket</h2>
+
+<a asp-action="Create"
+   class="btn btn-primary mb-3">
+    Pesan Tiket
+</a>
+
+<table class="table table-bordered table-striped">
+
+    <thead class="table-dark">
+
+        <tr>
+
+            <th>No Tiket</th>
+
+            <th>Pengunjung</th>
+
+            <th>Wisata</th>
+
+            <th>Tanggal Kunjungan</th>
+
+            <th>Jumlah Tiket</th>
+
+            <th>Total Bayar</th>
+
+            <th width="220">Aksi</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @if(Model.Any())
+        {
+            @foreach(var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @item.NomorTiket
+                    </td>
+
+                    <td>
+                        @item.Pengunjung?.Nama
+                    </td>
+
+                    <td>
+                        @item.Wisata?.NamaWisata
+                    </td>
+
+                    <td>
+                        @item.TanggalKunjungan.ToString("dd MMM yyyy")
+                    </td>
+
+                    <td>
+                        @item.JumlahTiket
+                    </td>
+
+                    <td>
+                        Rp @item.TotalBayar.ToString("N0")
+                    </td>
+
+                    <td>
+
+                        <a asp-action="Detail"
+                           asp-route-id="@item.Id"
+                           class="btn btn-info btn-sm">
+                            Detail
+                        </a>
+
+                        <a asp-action="Cetak"
+                           asp-route-id="@item.Id"
+                           class="btn btn-success btn-sm">
+                            Cetak PDF
+                        </a>
+
+                        <a asp-action="Delete"
+                           asp-route-id="@item.Id"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Yakin ingin menghapus data ini?')">
+                            Hapus
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7"
+                    class="text-center">
+                    Belum ada data pemesanan
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
