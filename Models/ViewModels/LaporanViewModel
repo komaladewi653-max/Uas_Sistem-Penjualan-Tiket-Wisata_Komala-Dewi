@@ -1,0 +1,14 @@
+using WisataTicketApp.Models;
+
+namespace WisataTicketApp.Models.ViewModels
+{
+    public class LaporanViewModel
+    {
+        public List<Pemesanan> Pemesanans { get; set; }
+            = new();
+
+        public decimal TotalPendapatan { get; set; }
+
+        public int TotalTransaksi { get; set; }
+    }
+}
