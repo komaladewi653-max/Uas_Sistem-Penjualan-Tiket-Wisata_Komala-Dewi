@@ -1,0 +1,104 @@
+@model List<WisataTicketApp.Models.Pemesanan>
+
+<h2 class="mb-4">Data Pemesanan Tiket</h2>
+
+<a asp-action="Create"
+   class="btn btn-primary mb-3">
+    Pesan Tiket
+</a>
+
+<table class="table table-bordered table-striped">
+
+    <thead class="table-dark">
+
+        <tr>
+
+            <th>No Tiket</th>
+
+            <th>Pengunjung</th>
+
+            <th>Wisata</th>
+
+            <th>Tanggal Kunjungan</th>
+
+            <th>Jumlah Tiket</th>
+
+            <th>Total Bayar</th>
+
+            <th width="220">Aksi</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @if(Model.Any())
+        {
+            @foreach(var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @item.NomorTiket
+                    </td>
+
+                    <td>
+                        @item.Pengunjung?.Nama
+                    </td>
+
+                    <td>
+                        @item.Wisata?.NamaWisata
+                    </td>
+
+                    <td>
+                        @item.TanggalKunjungan.ToString("dd MMM yyyy")
+                    </td>
+
+                    <td>
+                        @item.JumlahTiket
+                    </td>
+
+                    <td>
+                        Rp @item.TotalBayar.ToString("N0")
+                    </td>
+
+                    <td>
+
+                        <a asp-action="Detail"
+                           asp-route-id="@item.Id"
+                           class="btn btn-info btn-sm">
+                            Detail
+                        </a>
+
+                        <a asp-action="Cetak"
+                           asp-route-id="@item.Id"
+                           class="btn btn-success btn-sm">
+                            Cetak PDF
+                        </a>
+
+                        <a asp-action="Delete"
+                           asp-route-id="@item.Id"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Yakin ingin menghapus data ini?')">
+                            Hapus
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7"
+                    class="text-center">
+                    Belum ada data pemesanan
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
