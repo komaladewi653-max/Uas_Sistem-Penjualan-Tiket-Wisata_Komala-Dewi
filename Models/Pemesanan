@@ -1,0 +1,30 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace WisataTicketApp.Models
+{
+    public class Pemesanan
+    {
+        public Guid Id { get; set; } = Guid.NewGuid();
+
+        public string NomorTiket { get; set; } = string.Empty;
+
+        [Required]
+        public Guid PengunjungId { get; set; }
+
+        public Pengunjung? Pengunjung { get; set; }
+
+        [Required]
+        public Guid WisataId { get; set; }
+
+        public Wisata? Wisata { get; set; }
+
+        [Required]
+        public DateTime TanggalKunjungan { get; set; }
+
+        public int JumlahTiket { get; set; }
+
+        public decimal TotalBayar { get; set; }
+
+        public DateTime TanggalPesan { get; set; } = DateTime.Now;
+    }
+}
