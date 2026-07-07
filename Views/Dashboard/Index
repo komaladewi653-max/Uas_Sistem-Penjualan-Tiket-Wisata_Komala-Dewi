@@ -1,0 +1,158 @@
+@model WisataTicketApp.Models.ViewModels.DashboardViewModel
+
+<div class="hero">
+    <h1>Selamat Datang di <br /> WisataTicket</h1>
+
+    <p>
+        Kelola tiket wisata dengan mudah,
+        cepat, dan modern.
+    </p>
+
+    <a href="/Wisata" class="btn btn-light mt-3">
+        Mulai Sekarang
+    </a>
+</div>
+
+<div class="row g-4 mb-4">
+
+    <div class="col-md-3">
+        <div class="stat-card blue">
+            <i class="bi bi-map"></i>
+            <div>
+                <h6>Wisata</h6>
+                <h3>@Model.TotalWisata</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="stat-card green">
+            <i class="bi bi-people"></i>
+            <div>
+                <h6>Pengunjung</h6>
+                <h3>@Model.TotalPengunjung</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="stat-card orange">
+            <i class="bi bi-ticket"></i>
+            <div>
+                <h6>Pemesanan</h6>
+                <h3>@Model.TotalPemesanan</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="stat-card red">
+            <i class="bi bi-cash"></i>
+            <div>
+                <h6>Pendapatan</h6>
+                <h5>
+                    Rp @Model.TotalPendapatan.ToString("N0")
+                </h5>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-4">
+
+    <div class="col-md-8">
+        <div class="card p-4 shadow-sm">
+            <h5>Grafik Pendapatan Bulanan</h5>
+
+            <canvas id="chartPemesanan"></canvas>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card p-4 shadow-sm">
+
+            <h5>Pemesanan Terbaru</h5>
+
+            <table class="table table-hover">
+
+                <thead>
+                    <tr>
+                        <th>No Tiket</th>
+                        <th>Tanggal</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model.RecentOrders)
+                    {
+                        <tr>
+                            <td>@item.NomorTiket</td>
+
+                            <td>
+                                @item.TanggalKunjungan.ToString("dd MMM yyyy")
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        const ctx =
+        document.getElementById('chartPemesanan');
+
+        new Chart(ctx, {
+
+        type: 'line',
+
+        data: {
+
+        labels: [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'Mei',
+        'Jun'
+        ],
+
+        datasets: [{
+
+        label: 'Pendapatan',
+
+        data: [
+        100000,
+        250000,
+        175000,
+        350000,
+        275000,
+        500000
+        ],
+
+        borderWidth: 3,
+
+        tension: 0.4,
+
+        fill: false
+        }]
+        }
+        });
+
+    </script>
+
+}
