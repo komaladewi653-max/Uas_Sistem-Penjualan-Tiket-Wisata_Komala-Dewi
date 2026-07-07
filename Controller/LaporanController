@@ -1,0 +1,43 @@
+using Microsoft.AspNetCore.Mvc;
+using WisataTicketApp.Services;
+
+namespace WisataTicketApp.Controllers
+{
+    public clausing Microsoft.AspNetCore.Mvc;
+using WisataTicketApp.Services;
+
+namespace WisataTicketApp.Controllers
+{
+    public class LaporanController : Controller
+    {
+        private readonly LaporanService _service;
+
+        public LaporanController(LaporanService service)
+        {
+            _service = service;
+        }
+
+        public IActionResult Index()
+        {
+            var data = _service.GetData();
+
+            return View(data);
+        }
+    }
+}ss LaporanController : Controller
+    {
+        private readonly LaporanService _service;
+
+        public LaporanController(LaporanService service)
+        {
+            _service = service;
+        }
+
+        public IActionResult Index()
+        {
+            var data = _service.GetData();
+
+            return View(data);
+        }
+    }
+}
