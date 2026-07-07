@@ -1,0 +1,45 @@
+@model WisataTicketApp.Models.Wisata
+
+<h1>Edit Wisata</h1>
+
+<form method="post">
+
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label>Nama Wisata</label>
+        <input asp-for="NamaWisata" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Lokasi</label>
+        <input asp-for="Lokasi" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Harga Tiket</label>
+        <input asp-for="HargaTiket" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Kuota</label>
+        <input asp-for="Kuota" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Deskripsi</label>
+        <textarea asp-for="Deskripsi" class="form-control"></textarea>
+    </div>
+
+    <button class="btn btn-success">
+        Update
+    </button>
+    <div class="mt-3">
+    </div>
+    <a asp-action="Index" class="btn btn-secondary">
+        Kembali
+    </a>
+
+</div>
+
+</form>
