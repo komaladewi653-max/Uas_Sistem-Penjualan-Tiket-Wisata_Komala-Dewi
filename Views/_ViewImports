@@ -1,0 +1,3 @@
+@using sistem_penjualan_tiket_wisata
+@using sistem_penjualan_tiket_wisata.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
