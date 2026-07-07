@@ -1,0 +1,56 @@
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
+using WisataTicketApp.Models;
+
+namespace WisataTicketApp.Services
+{
+    public class TicketPdfService
+    {
+        public byte[] Generate(Pemesanan data)
+        {
+            return Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+
+                    page.Margin(30);
+
+                    page.Header()
+                        .Text("WISATA TICKET APP")
+                        .FontSize(20)
+                        .Bold();
+
+                    page.Content()
+                        .Column(col =>
+                        {
+                            col.Spacing(10);
+
+                            col.Item().Text($"Nomor Tiket : {data.NomorTiket}");
+
+                            col.Item().Text(
+                                $"Nama Pengunjung : {data.Pengunjung?.Nama}");
+
+                            col.Item().Text(
+                                $"Wisata : {data.Wisata?.NamaWisata}");
+
+                            col.Item().Text(
+                                $"Tanggal Kunjungan : {data.TanggalKunjungan:dd MMMM yyyy}");
+
+                            col.Item().Text(
+                                $"Jumlah Tiket : {data.JumlahTiket}");
+
+                            col.Item().Text(
+                                $"Total Bayar : Rp {data.TotalBayar:N0}");
+                        });
+
+                    page.Footer()
+                        .AlignCenter()
+                        .Text("Terima kasih telah menggunakan WisataTicketApp");
+                });
+            })
+            .GeneratePdf();
+        }
+    }
+}
