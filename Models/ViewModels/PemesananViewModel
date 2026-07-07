@@ -1,0 +1,21 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace WisataTicketApp.Models.ViewModels
+{
+    public class PemesananViewModel
+    {
+        public Guid PengunjungId { get; set; }
+
+        public Guid WisataId { get; set; }
+
+        public DateTime TanggalKunjungan { get; set; }
+
+        public int JumlahTiket { get; set; }
+
+        public List<SelectListItem> Pengunjungs { get; set; }
+            = new();
+
+        public List<SelectListItem> Wisatas { get; set; }
+            = new();
+    }
+}
