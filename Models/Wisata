@@ -1,0 +1,22 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace WisataTicketApp.Models
+{
+    public class Wisata
+    {
+        public Guid Id { get; set; } = Guid.NewGuid();
+
+        [Required]
+        public string? NamaWisata { get; set; }
+
+        [Required]
+        public string? Lokasi { get; set; }
+
+        [Required]
+        public decimal HargaTiket { get; set; }
+
+        public int Kuota { get; set; }
+
+        public string? Deskripsi { get; set; }
+    }
+}
