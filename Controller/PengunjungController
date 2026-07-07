@@ -1,0 +1,74 @@
+using Microsoft.AspNetCore.Mvc;
+using WisataTicketApp.Models;
+using WisataTicketApp.Services;
+
+namespace WisataTicketApp.Controllers
+{
+    public class PengunjungController : Controller
+    {
+        private readonly PengunjungService _service;
+
+        public PengunjungController(PengunjungService service)
+        {
+            _service = service;
+        }
+
+        // GET: Pengunjung
+        public IActionResult Index()
+        {
+            var data = _service.GetAll();
+            return View(data);
+        }
+
+        // GET: Pengunjung/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Pengunjung/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Pengunjung pengunjung)
+        {
+            if (!ModelState.IsValid)
+                return View(pengunjung);
+
+            _service.Create(pengunjung);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Pengunjung/Edit/id
+        public IActionResult Edit(Guid id)
+        {
+            var pengunjung = _service.GetById(id);
+
+            if (pengunjung == null)
+                return NotFound();
+
+            return View(pengunjung);
+        }
+
+        // POST: Pengunjung/Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Pengunjung pengunjung)
+        {
+            if (!ModelState.IsValid)
+                return View(pengunjung);
+
+            _service.Update(pengunjung);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Pengunjung/Delete/id
+        public IActionResult Delete(Guid id)
+        {
+            _service.Delete(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+    }
+}
