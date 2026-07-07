@@ -1,2 +1,3 @@
-# Uas_Sistem-Penjualan-Tiket-Wisata_Komala-Dewi
-Tugas Uas PBO
+NIM	 :2457201036		
+Nama :Komala Dewi	
+Nama	System	Informasi	:sistem penjualan tiket wisata
