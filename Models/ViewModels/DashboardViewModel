@@ -1,0 +1,21 @@
+using WisataTicketApp.Models;
+
+namespace WisataTicketApp.Models.ViewModels
+{
+    public class DashboardViewModel
+    {
+        public int TotalWisata { get; set; }
+
+        public int TotalPengunjung { get; set; }
+
+        public int TotalPemesanan { get; set; }
+
+        public int TotalTiketTerjual { get; set; }
+
+        public int TotalKuotaTersedia { get; set; }
+
+        public decimal TotalPendapatan { get; set; }
+
+        public List<Pemesanan> RecentOrders { get; set; } = new();
+    }
+}
