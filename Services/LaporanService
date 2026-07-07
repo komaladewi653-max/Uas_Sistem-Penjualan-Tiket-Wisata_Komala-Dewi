@@ -1,0 +1,32 @@
+using Microsoft.EntityFrameworkCore;
+using WisataTicketApp.Data;
+using WisataTicketApp.Models.ViewModels;
+
+namespace WisataTicketApp.Services
+{
+    public class LaporanService
+    {
+        private readonly ApplicationDbContext _context;
+
+        public LaporanService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public LaporanViewModel GetData()
+        {
+            var data = _context.Pemesanans
+                .Include(x => x.Pengunjung)
+                .Include(x => x.Wisata)
+                .OrderByDescending(x => x.TanggalKunjungan)
+                .ToList();
+
+            return new LaporanViewModel
+            {
+                Pemesanans = data,
+                TotalTransaksi = data.Count,
+                TotalPendapatan = data.Sum(x => x.TotalBayar)
+            };
+        }
+    }
+}
